@@ -79,8 +79,6 @@ public class NativeComponentModelPlugin implements Plugin<ProjectInternal> {
     public void apply(final ProjectInternal project) {
         project.getPluginManager().apply(ComponentModelBasePlugin.class);
 
-        project.getExtensions().create("buildTypes", DefaultBuildTypeContainer.class, instantiator);
-        project.getExtensions().create("flavors", DefaultFlavorContainer.class, instantiator);
         project.getExtensions().create("toolChains", DefaultNativeToolChainRegistry.class, instantiator);
 
         modelRegistry.getRoot().applyTo(allDescendants(withType(NativeComponentSpec.class)), NativeComponentRules.class);
@@ -118,13 +116,13 @@ public class NativeComponentModelPlugin implements Plugin<ProjectInternal> {
         }
 
         @Model
-        BuildTypeContainer buildTypes(ExtensionContainer extensionContainer) {
-            return extensionContainer.getByType(BuildTypeContainer.class);
+        BuildTypeContainer buildTypes(ServiceRegistry serviceRegistry) {
+            return new DefaultBuildTypeContainer(serviceRegistry.get(Instantiator.class));
         }
 
         @Model
-        FlavorContainer flavors(ExtensionContainer extensionContainer) {
-            return extensionContainer.getByType(FlavorContainer.class);
+        FlavorContainer flavors(ServiceRegistry serviceRegistry) {
+            return new DefaultFlavorContainer(serviceRegistry.get(Instantiator.class));
         }
 
         @Mutate

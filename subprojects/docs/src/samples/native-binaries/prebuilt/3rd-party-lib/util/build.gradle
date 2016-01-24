@@ -7,7 +7,7 @@ model {
     components {
         util(NativeLibrarySpec) {
             binaries.all {
-                if (buildType == buildTypes.debug) {
+                if (buildType == $.buildTypes['debug']) {
                     cppCompiler.define 'DEBUG'
                     if (toolChain in VisualCpp) {
                         cppCompiler.args '/Zi'

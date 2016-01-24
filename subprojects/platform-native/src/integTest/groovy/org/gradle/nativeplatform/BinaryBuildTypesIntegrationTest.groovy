@@ -60,7 +60,7 @@ model {
                     }
                 }
                 // Apply to 'integration' type binaries only
-                if (buildType == buildTypes['integration']) {
+                if (buildType == \$.buildTypes['integration']) {
                     cppCompiler.define "FRENCH"
                 }
             }
@@ -104,7 +104,7 @@ model {
         main(NativeExecutableSpec) {
             targetBuildTypes "release"
             binaries.all { binary ->
-                if (buildType == buildTypes.release) {
+                if (buildType == \$.buildTypes['release']) {
                     cppCompiler.define "FRENCH"
                 }
             }
@@ -147,7 +147,7 @@ model {
     }
     binaries {
         all {
-            if (buildType == buildTypes.debug) {
+            if (buildType == \$.buildTypes['debug']) {
                 cppCompiler.define "FRENCH" // Equate 'debug' to 'french' for this test
             }
         }

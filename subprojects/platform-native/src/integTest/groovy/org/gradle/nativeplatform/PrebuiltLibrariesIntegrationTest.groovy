@@ -41,7 +41,7 @@ model {
     components {
         hello(NativeLibrarySpec) {
             binaries.all {
-                if (flavor == flavors.french) {
+                if (flavor == \$.flavors['french']) {
                     cppCompiler.define "FRENCH"
                 }
             }

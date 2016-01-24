@@ -41,7 +41,7 @@ model {
         withType(CUnitTestSuiteBinarySpec) {
             lib library: "cunit", linkage: "static"
 
-            if (flavor == flavors.failing) {
+            if (flavor == $.flavors['failing']) {
                 cCompiler.define "PLUS_BROKEN"
             }
         }

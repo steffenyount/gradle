@@ -41,7 +41,7 @@ model {
         withType(GoogleTestTestSuiteBinarySpec) {
             lib library: "googleTest", linkage: "static"
 
-            if (flavor == flavors.failing) {
+            if (flavor == $.flavors['failing']) {
                 cppCompiler.define "PLUS_BROKEN"
             }
 

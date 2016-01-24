@@ -69,11 +69,11 @@ model {
     @LeaksFileHandles
     def "can configure components for a single flavor"() {
         given:
-        buildFile << """
+        buildFile << '''
 model {
     binaries {
         all {
-            if (flavor == flavors.french) {
+            if (flavor == $.flavors['french']) {
                 cppCompiler.define "FRENCH"
             }
         }
@@ -84,7 +84,7 @@ model {
         greetings.targetFlavors "french"
     }
 }
-"""
+'''
         when:
         succeeds "installMainExecutable"
 
@@ -105,13 +105,13 @@ model {
     @LeaksFileHandles("can't delete build/install/mainExecutable/french")
     def "executable with flavors depends on library with matching flavors"() {
         when:
-        buildFile << """
+        buildFile << '''
 model {
     components {
         main {
             targetFlavors "english", "french"
             binaries.all {
-                if (flavor == flavors.french) {
+                if (flavor == $.flavors['french']) {
                     cppCompiler.define "FRENCH"
                 }
             }
@@ -119,14 +119,14 @@ model {
         withType(NativeLibrarySpec) {
             targetFlavors "english", "french"
             binaries.all {
-                if (flavor == flavors.french) {
+                if (flavor == $.flavors['french']) {
                     cppCompiler.define "FRENCH"
                 }
             }
         }
     }
 }
-"""
+'''
 
         and:
         succeeds "installMainEnglishExecutable", "installMainFrenchExecutable"
