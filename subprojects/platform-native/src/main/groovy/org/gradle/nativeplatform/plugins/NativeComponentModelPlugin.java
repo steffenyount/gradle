@@ -24,7 +24,6 @@ import org.gradle.api.internal.DefaultPolymorphicDomainObjectContainer;
 import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.api.internal.file.SourceDirectorySetFactory;
 import org.gradle.api.internal.project.ProjectInternal;
-import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.internal.service.ServiceRegistry;
@@ -79,8 +78,6 @@ public class NativeComponentModelPlugin implements Plugin<ProjectInternal> {
     public void apply(final ProjectInternal project) {
         project.getPluginManager().apply(ComponentModelBasePlugin.class);
 
-        project.getExtensions().create("toolChains", DefaultNativeToolChainRegistry.class, instantiator);
-
         modelRegistry.getRoot().applyTo(allDescendants(withType(NativeComponentSpec.class)), NativeComponentRules.class);
     }
 
@@ -111,8 +108,8 @@ public class NativeComponentModelPlugin implements Plugin<ProjectInternal> {
         }
 
         @Model
-        NativeToolChainRegistryInternal toolChains(ExtensionContainer extensionContainer) {
-            return extensionContainer.getByType(NativeToolChainRegistryInternal.class);
+        NativeToolChainRegistryInternal toolChains(ServiceRegistry serviceRegistry) {
+            return new DefaultNativeToolChainRegistry(serviceRegistry.get(Instantiator.class));
         }
 
         @Model
