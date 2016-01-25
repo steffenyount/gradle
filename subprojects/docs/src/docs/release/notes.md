@@ -75,6 +75,26 @@ The following are the newly deprecated items in this Gradle release. If you have
 
 ## Potential breaking changes
 
+### Software model types no longer registered as extensions: `flavors`, `buildTypes`, `toolChains`, `platforms`
+
+Certain software model types were introduced before there was sufficient DSL support in the software model. To assist with configuration, these types were registered as regular extensions in Gradle, and could thus be accessed anywhere inside or outside of a `model` block. Because of this, these types did not need to be properly declared as rule inputs when configuring native binaries in the DSL.
+
+The following extensions are no longer:
+- flavors: `FlavorContainer`
+- buildTypes: `BuildTypeContainer`
+- toolChains: `NativeToolChainRegistry`
+- platforms: `PlatformContainer`
+
+Because of this change, these types will need to be referenced using the `$.` syntax in the DSL. e.g.
+
+    binaries {
+        all {
+            if (flavor == $.flavors['french']) {
+                cppCompiler.define "FRENCH"
+            }
+        }
+    }
+
 ### Changes to 'idea' plugin Scala projects
 
 Scala projects using the 'idea' plugin now generate IntelliJ IDEA metadata targeting versions 14 and newer. Users of IDEA versions older than 14 will need to update
