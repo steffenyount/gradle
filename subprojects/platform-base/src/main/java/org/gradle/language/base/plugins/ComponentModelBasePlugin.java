@@ -18,7 +18,6 @@ package org.gradle.language.base.plugins;
 import com.google.common.collect.Lists;
 import org.gradle.api.*;
 import org.gradle.api.internal.project.ProjectIdentifier;
-import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.internal.service.ServiceRegistry;
@@ -125,11 +124,6 @@ public class ComponentModelBasePlugin implements Plugin<Project> {
         @Hidden @Model
         PlatformResolvers platformResolver(PlatformContainer platforms) {
             return new DefaultPlatformResolvers(platforms);
-        }
-
-        @Mutate
-        void registerPlatformExtension(ExtensionContainer extensions, PlatformContainer platforms) {
-            extensions.add("platforms", platforms);
         }
 
         @Mutate
